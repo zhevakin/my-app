@@ -1,11 +1,15 @@
 import React from 'react'
 import axios from 'axios'
 import Spinner from 'react-bootstrap/Spinner'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
 import './App.css'
 
 import Book from './components/Book'
 import AddBookForm from './components/AddBookForm'
+
+const apiUrl = 'https://nordic-books-api.herokuapp.com'
 
 class App extends React.Component {
   constructor() {
@@ -13,6 +17,7 @@ class App extends React.Component {
     this.state = {
       books: [],
       isLoading: false,
+      isDeleteModalActive: false,
     }
   }
 
@@ -23,7 +28,7 @@ class App extends React.Component {
   getBooks = () => {
     this.setState({ isLoading: true })
 
-    axios.get('https://nordic-books-api.herokuapp.com/books').then((res) => {
+    axios.get(`${apiUrl}/books`).then((res) => {
       this.setState({
         books: res.data.data,
         isLoading: false,
@@ -37,7 +42,7 @@ class App extends React.Component {
     formData.append('author', author)
     formData.append('title', title)
 
-    fetch('https://nordic-books-api.herokuapp.com/books', {
+    fetch(`${apiUrl}/books`, {
       method: 'POST',
       body: formData,
     })
@@ -47,8 +52,32 @@ class App extends React.Component {
       })
   }
 
+  handleBookDelete = (bookId) => {
+    this.setState({
+      isDeleteModalActive: true,
+      bookId,
+    })
+  }
+
+  handleDeleteModalHide = () => {
+    this.setState({
+      isDeleteModalActive: false,
+    })
+  }
+
+  handleDeleteConfirm = () => {
+    const { bookId } = this.state
+
+    fetch(`${apiUrl}/books/${bookId}`, {
+      method: 'DELETE',
+    }).then(() => {
+      this.handleDeleteModalHide()
+      this.getBooks()
+    })
+  }
+
   render() {
-    const { isLoading } = this.state
+    const { isLoading, isDeleteModalActive } = this.state
     return (
       <div className="container py-3">
         <h1>Электронная библиотека</h1>
@@ -60,11 +89,33 @@ class App extends React.Component {
           <div>
             {this.state.books.map((book) => (
               <div key={book._id} className="mb-3">
-                <Book book={book} />
+                <Book
+                  book={book}
+                  onDelete={() => this.handleBookDelete(book._id)}
+                />
               </div>
             ))}
           </div>
         )}
+
+        <Modal show={isDeleteModalActive} onHide={this.handleDeleteModalHide}>
+          <Modal.Header closeButton>
+            <Modal.Title>Удаление книги</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>Вы уверены?</p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleDeleteModalHide}>
+              Отмена
+            </Button>
+            <Button variant="danger" onClick={this.handleDeleteConfirm}>
+              Удалить
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
