@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class AddBookForm extends React.Component {
   constructor() {
@@ -22,7 +23,10 @@ class AddBookForm extends React.Component {
 
     const { title, author } = this.state
     const data = { title, author }
-    this.props.onSubmit(data)
+
+    if (typeof this.props.onSubmit === 'function') {
+      this.props.onSubmit(data)
+    }
 
     this.setState({
       title: '',
@@ -58,6 +62,10 @@ class AddBookForm extends React.Component {
       </form>
     )
   }
+}
+
+AddBookForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default AddBookForm

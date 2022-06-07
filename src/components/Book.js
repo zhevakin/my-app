@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import bookType from '../types/book'
 
 function Book(props) {
   const { book } = props
@@ -17,6 +18,10 @@ function Book(props) {
       </Card.Body>
     </Card>
   )
+}
+
+Book.propTypes = {
+  book: bookType.isRequired,
 }
 
 export default Book
