@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card'
 import bookType from '../types/book'
 
 function Book(props) {
-  const { book, onDelete } = props
+  const { book, onDelete, onEdit } = props
   return (
     <Card>
       <Card.Body>
@@ -12,7 +12,9 @@ function Book(props) {
         <Card.Title>{book.title}</Card.Title>
         <div>{book.author}</div>
         <div>
-          <Button className="me-2">Редактировать</Button>
+          <Button className="me-2" onClick={onEdit}>
+            Редактировать
+          </Button>
           <Button className="me-2">Показать комментарии</Button>
           <Button variant="danger" onClick={onDelete}>
             Удалить
@@ -26,6 +28,7 @@ function Book(props) {
 Book.propTypes = {
   book: bookType.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 }
 
 export default Book
