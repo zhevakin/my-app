@@ -37,10 +37,11 @@ class App extends React.Component {
   }
 
   handleBookSubmit = (data) => {
-    const { title, author } = data
+    const { title, author, file } = data
     const formData = new FormData()
     formData.append('author', author)
     formData.append('title', title)
+    formData.append('cover', file)
 
     fetch(`${apiUrl}/books`, {
       method: 'POST',

@@ -8,6 +8,7 @@ class AddBookForm extends React.Component {
       title: '',
       author: '',
     }
+    this.fileInputRef = React.createRef()
   }
 
   handleFieldChange = (event) => {
@@ -22,7 +23,7 @@ class AddBookForm extends React.Component {
     event.preventDefault()
 
     const { title, author } = this.state
-    const data = { title, author }
+    const data = { title, author, file: this.fileInputRef.current.files[0] }
 
     if (typeof this.props.onSubmit === 'function') {
       this.props.onSubmit(data)
@@ -57,6 +58,9 @@ class AddBookForm extends React.Component {
             value={author}
             onChange={this.handleFieldChange}
           />
+        </div>
+        <div className="mb-2">
+          <input type="file" ref={this.fileInputRef} />
         </div>
         <button type="submit">Добавить</button>
       </form>
