@@ -5,23 +5,6 @@ import BookForm from './BookForm'
 import bookType from '../types/book'
 
 class EditBookModal extends React.Component {
-  constructor(props) {
-    super()
-    this.state = {
-      title: props.book.title,
-      author: props.book.author,
-    }
-    this.fileInputRef = React.createRef()
-  }
-
-  handleFieldChange = (event) => {
-    const fieldName = event.target.name
-    const fieldValue = event.target.value
-    this.setState({
-      [fieldName]: fieldValue,
-    })
-  }
-
   handleSubmit = (data) => {
     this.props.onSubmit(data)
   }
