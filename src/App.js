@@ -5,7 +5,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import './App.css'
 
 import Book from './components/Book'
-import AddBookForm from './components/AddBookForm'
+import BookForm from './components/BookForm'
 import BookDeleteConfirmation from './components/BookDeleteConfirmation'
 import EditBookModal from './components/EditBookModal'
 
@@ -120,7 +120,11 @@ class App extends React.Component {
     return (
       <div className="container py-3">
         <h1>Электронная библиотека</h1>
-        <AddBookForm onSubmit={this.handleBookSubmit} />
+        <h3>Добавление книги</h3>
+        <BookForm
+          onSubmit={this.handleBookSubmit}
+          submitButtonText="Добавить"
+        />
 
         {isLoading ? (
           <Spinner animation="border" variant="primary" />

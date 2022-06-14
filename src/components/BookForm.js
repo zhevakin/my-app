@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Button from 'react-bootstrap/Button'
+import bookType from '../types/book'
 
-class AddBookForm extends React.Component {
-  constructor() {
+class BookForm extends React.Component {
+  constructor(props) {
     super()
     this.state = {
-      title: '',
-      author: '',
+      title: props.book ? props.book.title : '',
+      author: props.book ? props.book.author : '',
     }
     this.fileInputRef = React.createRef()
   }
@@ -36,11 +38,11 @@ class AddBookForm extends React.Component {
   }
 
   render() {
+    const { book, submitButtonText } = this.props
     const { title, author } = this.state
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <h3>Добавление книги</h3>
         <div className="mb-2">
           <input
             name="title"
@@ -60,16 +62,27 @@ class AddBookForm extends React.Component {
           />
         </div>
         <div className="mb-2">
+          {book && (
+            <div className="mb-2">
+              <img src={book.imageUrl} style={{ maxWidth: 200 }} alt="" />
+            </div>
+          )}
           <input type="file" ref={this.fileInputRef} />
         </div>
-        <button type="submit">Добавить</button>
+        <Button type="submit">{submitButtonText}</Button>
       </form>
     )
   }
 }
 
-AddBookForm.propTypes = {
+BookForm.propTypes = {
+  book: bookType,
+  submitButtonText: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
 }
 
-export default AddBookForm
+BookForm.defaultProps = {
+  submitButtonText: 'Сохранить',
+}
+
+export default BookForm
